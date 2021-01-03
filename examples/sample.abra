@@ -1,0 +1,75 @@
+func abc(
+  b: String[],
+  fn: (Int) => Int
+): Int {
+  return 0.45.round()
+}
+
+val a: Int = "asdf"
+var a: Int[] = [
+  "a",
+  "5"
+]
+val [a, b] = [1, 2, 3]
+
+func abc(s: String = "asdf"): (String, String) = (s, s)
+val x = a(a, b, c)
+
+type Person {
+  name: String
+
+  func toString(self): String {
+    println(hello)
+    "Person(name: " + self.name + ")"
+  }
+}
+val p = Person(name: "Ken", self).name
+
+enum Direction {
+  Up(amt: Int)
+  Down(amt: Int)
+
+  func toString(self): String {
+    "Person(name: " + self.name + ")"
+  }
+}
+
+val x = if x |x| {
+  val p = abc()
+  p
+} else {
+  None
+}
+
+while x |x| {
+  val p = abc()
+  break
+}
+
+for x in range(0, 9) {
+  val p = abc()
+}
+
+val s: String | Int = "asdf"
+val x = match s {
+  String s => println(s)
+  Int i => println(i)
+}
+
+val d: Direction = Direction.Up(amt: 12)
+match d {
+  Direction.Up(amt) d => println(d),
+  Direction.Down(_) d => println(d)
+}
+
+val m: Map<String, Int[]> = {
+  a: 123,
+  b: "asdf"
+}
+val s: Set<Int> = #{1, 2, 3} // this is a comment
+/* this is a block
+comment */
+
+// val a /* this is an inline comment */: Int = 123
+// TODO: This doesn't work ^
+

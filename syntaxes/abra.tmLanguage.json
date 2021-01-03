@@ -1,0 +1,246 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Abra",
+  "patterns": [{ "include": "#code" }],
+  "repository": {
+    "code": {
+      "patterns": [
+        { "include": "#comment" },
+        { "include": "#statement" },
+        { "include": "#keyword" }
+      ]
+    },
+    "comment": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.abra",
+          "begin": "//",
+          "end": "$"
+        },
+        {
+          "name": "comment.block.abra",
+          "begin": "/\\*",
+          "end": "\\*/"
+        }
+      ]
+    },
+    "statement": {
+      "patterns": [
+        { "include": "#func-decl" },
+        { "include": "#enum-decl" },
+        { "include": "#var-decl" },
+        { "include": "#type-decl" },
+        { "include": "#expression" }
+      ]
+    },
+    "expression": {
+      "patterns": [
+        { "include": "#string" },
+        { "include": "#number" },
+        { "include": "#func-call" },
+        { "include": "#match-expr" },
+        { "include": "#identifier" }
+      ]
+    },
+    "keyword": {
+      "patterns": [
+        {
+          "name": "keyword.control.abra",
+          "match": "\\b(if|else|while|for|in|break|match|return)\\b"
+        },
+        {
+          "name": "storage.type.abra",
+          "match": "\\b(type|enum|func|val|var|self|true|false|None)\\b"
+        }
+      ]
+    },
+    "string": {
+      "name": "string.quoted.double.abra",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.abra",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "number": {
+      "name": "constant.numeric.abra",
+      "match": "\\b([0-9]+\\.?[0-9]*)\\b"
+    },
+    "identifier": {
+      "patterns": [
+        {
+          "include": "#keyword"
+        },
+        {
+          "name": "entity.name.variable.abra",
+          "match": "([a-zA-Z][a-zA-Z0-9_]*)"
+        }
+      ]
+    },
+    "func-args": {
+      "patterns": [
+        {
+          "name": "storage.type.abra",
+          "match": "\\bself\\b"
+        },
+        {
+          "name": "punctuation.separator.delimiter.abra",
+          "match": ","
+        },
+        { "include": "#expression" }
+      ]
+    },
+    "func-call": {
+      "patterns": [
+        {
+          "name": "meta.function.call.abra",
+          "begin": "([a-z][a-zA-Z0-9_]*)\\(",
+          "end": "\\)",
+          "beginCaptures": { "1": { "name": "entity.name.function.abra" } },
+          "patterns": [{ "include": "#func-args" }]
+        },
+        {
+          "name": "meta.function.invocation.abra",
+          "begin": "([A-Z][a-zA-Z0-9_]*)\\(",
+          "end": "\\)",
+          "beginCaptures": { "1": { "name": "entity.name.type.abra" } },
+          "patterns": [{ "include": "#func-args" }]
+        }
+      ]
+    },
+    "match-expr": {
+      "name": "meta.match.abra",
+      "begin": "(match)",
+      "end": "\\}",
+      "beginCaptures": { "1": { "name": "keyword.control.abra" } },
+      "patterns": [
+        {
+          "begin": "([A-Z][a-zA-Z0-9_]*)",
+          "end": "(=>)",
+          "beginCaptures": {
+            "1": { "name": "entity.name.type.abra" }
+          },
+          "endCaptures": {
+            "0": { "name": "storage.type.function.arrow.abra" }
+          },
+          "patterns": [{ "include": "#code" }]
+        },
+        { "include": "#code" }
+      ]
+    },
+    "type-ident": {
+      "name": "meta.type.name.abra",
+      "patterns": [
+        {
+          "match": "([A-Z][a-zA-Z0-9_]*)",
+          "captures": {
+            "1": { "name": "entity.name.type.abra" }
+          }
+        },
+        {
+          "begin": "\\(|<",
+          "end": "\\)|>",
+          "patterns": [
+            {
+              "name": "punctuation.separator.delimiter.abra",
+              "match": ","
+            },
+            { "include": "#type-ident" }
+          ]
+        },
+        {
+          "name": "storage.type.function.arrow.abra",
+          "match": "=>"
+        }
+      ]
+    },
+    "type-annotation": {
+      "name": "meta.type.annotation.abra",
+      "begin": ":",
+      "end": "(?=$|[,){])|(?==[^>])",
+      "patterns": [{ "include": "#type-ident" }]
+    },
+    "func-params": {
+      "name": "meta.parameters.abra",
+      "begin": "\\(",
+      "end": "\\)",
+      "patterns": [
+        {
+          "name": "storage.type.abra",
+          "match": "\\bself\\b"
+        },
+        {
+          "name": "entity.name.variable.abra",
+          "match": "[a-z][a-zA-Z0-9_]*"
+        },
+        { "include": "#type-annotation" },
+        {
+          "name": "punctuation.separator.delimiter.abra",
+          "match": ","
+        },
+        { "include": "#expression" }
+      ]
+    },
+    "func-decl": {
+      "name": "meta.function.abra",
+      "begin": "\\b(func)\\s+([a-z][a-zA-Z0-9_]*)(?=\\()",
+      "end": "}|$",
+      "beginCaptures": {
+        "1": { "name": "storage.type.abra" },
+        "2": { "name": "entity.name.function" }
+      },
+      "patterns": [
+        { "include": "#func-params" },
+        { "include": "#type-annotation" },
+        { "include": "#code" }
+      ]
+    },
+    "var-decl": {
+      "name": "meta.definition.variable.abra",
+      "patterns": [
+        {
+          "begin": "(val|var)\\s+([a-z][a-zA-Z0-9_]*)\\s*",
+          "end": "=|\n",
+          "beginCaptures": {
+            "1": { "name": "storage.type.abra" },
+            "2": { "name": "variable.other.readwrite.abra" }
+          },
+          "patterns": [{ "include": "#type-annotation" }]
+        }
+      ]
+    },
+    "type-decl": {
+      "name": "meta.definition.type.abra",
+      "begin": "\\b(type)\\s+([A-Z][a-zA-Z0-9_]*)\\s*(?:\\{)",
+      "end": "}",
+      "beginCaptures": {
+        "1": { "name": "storage.type.abra" },
+        "2": { "name": "entity.name.type.abra" }
+      },
+      "patterns": [{ "include": "#type-annotation" }, { "include": "#code" }]
+    },
+    "enum-decl": {
+      "name": "meta.definition.enum.abra",
+      "begin": "\\b(enum)\\s+([A-Z][a-zA-Z0-9_]*)\\s*(?:\\{)",
+      "end": "}",
+      "beginCaptures": {
+        "1": { "name": "storage.type.abra" },
+        "2": { "name": "entity.name.type.abra" }
+      },
+      "patterns": [
+        {
+          "name": "meta.definition.enum.variant.abra",
+          "begin": "([A-Z][a-zA-Z0-9_]*)",
+          "end": ",|$",
+          "beginCaptures": { "1": { "name": "entity.name.type.abra" } },
+          "patterns": [{ "include": "#func-params" }]
+        },
+        { "include": "#statement" }
+      ]
+    }
+  },
+  "scopeName": "source.abra"
+}
