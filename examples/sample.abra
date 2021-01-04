@@ -5,55 +5,62 @@ func abc(
   return 0.45.round()
 }
 
-val a: Int = "asdf"
-var a: Int[] = [
-  "a",
-  "5"
-]
+// val a: Int = "asdf"
+// var a: Int[] = [
+//   "a",
+//   "5"
+// ]
 val [a, b] = [1, 2, 3]
 
-func abc(s: String = "asdf"): (String, String) = (s, s)
-val x = a(a, b, c)
+func def(s: String = "asdf"): (String, String) = (s, s)
+// val x = a(a, b, c)
 
 type Person {
   name: String
 
   func toString(self): String {
-    println(hello)
+    println("hello")
     "Person(name: " + self.name + ")"
   }
 }
-val p = Person(name: "Ken", self).name
+val p = Person(name: "Ken").name
 
 enum Direction {
   Up(amt: Int)
   Down(amt: Int)
 
-  func toString(self): String {
-    "Person(name: " + self.name + ")"
-  }
+  // func toString(self): String {
+  //   "Person(name: " + self.name + ")"
+  // }
 }
 
-val x = if x |x| {
-  val p = abc()
+val x: Int? = 3
+val y = if x |x| {
+  val p = abc([], i => i)
   p
 } else {
   None
 }
 
 while x |x| {
-  val p = abc()
+  val p = abc([], i => i)
   break
 }
 
 for x in range(0, 9) {
-  val p = abc()
+  val p = abc([], i => i)
 }
 
-val s: String | Int = "asdf"
-val x = match s {
-  String s => println(s)
-  Int i => println(i)
+val h: String | Int = "asdf"
+val q = match h {
+  String s => {
+    println(s)
+    3
+  }
+  Int i => {
+    println(i)
+    i
+  }
 }
 
 val d: Direction = Direction.Up(amt: 12)
@@ -62,11 +69,11 @@ match d {
   Direction.Down(_) d => println(d)
 }
 
-val m: Map<String, Int[]> = {
-  a: 123,
-  b: "asdf"
+val s: Map<String, Int[]> = {
+  a: [123],
+  b: ["asdf".length]
 }
-val s: Set<Int> = #{1, 2, 3} // this is a comment
+val e: Set<Int> = #{1, 2, 3} // this is a comment
 /* this is a block
 comment */
 
