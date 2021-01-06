@@ -40,24 +40,12 @@
     ],
     "configuration": {
       "type": "object",
-      "title": "Example configuration",
+      "title": "Abra",
       "properties": {
-        "languageServerExample.maxNumberOfProblems": {
-          "scope": "resource",
-          "type": "number",
-          "default": 100,
-          "description": "Controls the maximum number of problems produced by the server."
-        },
-        "languageServerExample.trace.server": {
-          "scope": "window",
+        "abra.lspPath": {
           "type": "string",
-          "enum": [
-            "off",
-            "messages",
-            "verbose"
-          ],
-          "default": "verbose",
-          "description": "Traces the communication between VS Code and the language server."
+          "default": null,
+          "description": "Path to the `abra-lsp` binary to use. By default, the extension will use the version bundled with it, but this may be useful for overriding"
         }
       }
     }

@@ -51,8 +51,8 @@ for x in range(0, 9) {
   val p = abc([], i => i)
 }
 
-val h: String | Int = "asdf"
-val q = match h {
+val hhh: String | Int = "asdf"
+val q = match hhh {
   String s => {
     println(s)
     3
@@ -69,11 +69,11 @@ match d {
   Direction.Down(_) d => println(d)
 }
 
-val s: Map<String, Int[]> = {
-  a: [123],
-  b: ["asdf".length]
-}
-val e: Set<Int> = #{1, 2, 3} // this is a comment
+// val s: Map<String, Int[]> = {
+//   a: [123],
+//   b: ["asdf".length]
+// }           //
+val hhh: Set<Int> = #{1, 2, 3} // this is a comment
 /* this is a block
 comment */
 
