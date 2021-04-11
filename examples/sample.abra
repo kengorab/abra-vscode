@@ -1,3 +1,5 @@
+import expect from test
+
 func abc(
   b: String[],
   fn: (Int) => Int
@@ -12,13 +14,13 @@ func abc(
 // ]
 val [a, b] = [1, 2, 3]
 
-func def(s: String = "asdf"): (String, String) = (s, s)
+export func def(s = "asdf"): (String, String) = (s, s)
 // val x = a(a, b, c)
 
 type Person {
-  name: String
+  name: String readonly
 
-  func toString(self): String {
+  func _toString(self): String {
     println("hello")
     "Person(name: " + self.name + ")"
   }

@@ -46,7 +46,7 @@
       "patterns": [
         {
           "name": "keyword.control.abra",
-          "match": "\\b(if|else|while|for|in|break|match|return)\\b"
+          "match": "\\b(if|else|while|for|in|break|match|return|import|from|export)\\b"
         },
         {
           "name": "storage.type.abra",
@@ -166,7 +166,13 @@
       "name": "meta.type.annotation.abra",
       "begin": ":",
       "end": "(?=$|[,){])|(?==[^>])",
-      "patterns": [{ "include": "#type-ident" }]
+      "patterns": [
+        { "include": "#type-ident" },
+        {
+          "name": "storage.modifier.abra",
+          "match": "\\breadonly\\b"
+        }
+      ]
     },
     "func-params": {
       "name": "meta.parameters.abra",

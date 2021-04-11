@@ -1,5 +1,11 @@
-interface Abc {
+import {  } from "module";
 
+export interface Abc {
+
+}
+
+class X {
+  private d: number
 }
 
 const def = 123;

@@ -6,8 +6,6 @@ let client: LanguageClient;
 
 export function activate(context: ExtensionContext) {
   workspace.onDidChangeConfiguration(() => {
-    console.log('config changed!');
-    
     client?.stop();
     client = init(context);
     client.start();
