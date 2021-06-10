@@ -46,7 +46,7 @@
       "patterns": [
         {
           "name": "keyword.control.abra",
-          "match": "\\b(if|else|while|for|in|break|match|return|import|from|export)\\b"
+          "match": "\\b(if|else|while|for|in|break|continue|match|return|import|from|export)\\b"
         },
         {
           "name": "storage.type.abra",
@@ -76,7 +76,7 @@
         },
         {
           "name": "entity.name.variable.abra",
-          "match": "([a-zA-Z][a-zA-Z0-9_]*)"
+          "match": "([_a-zA-Z][a-zA-Z0-9_]*)"
         }
       ]
     },
@@ -114,11 +114,11 @@
     "match-expr": {
       "name": "meta.match.abra",
       "begin": "(match)",
-      "end": "\\}",
+      "end": "}",
       "beginCaptures": { "1": { "name": "keyword.control.abra" } },
       "patterns": [
         {
-          "begin": "([A-Z][a-zA-Z0-9_]*)",
+          "begin": "([_A-Z][a-zA-Z0-9_]*)(\\s+([_a-zA-Z][a-zA-Z0-9_]*))?",
           "end": "(=>)",
           "beginCaptures": {
             "1": { "name": "entity.name.type.abra" }
@@ -130,7 +130,7 @@
         },
         {
           "begin": "(?<==>\\s*)\\{",
-          "end": "\\}",
+          "end": "}",
           "patterns": [{ "include": "#code" }]
         },
         { "include": "#code" }

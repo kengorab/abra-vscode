@@ -1,4 +1,5 @@
 import expect from test
+import abcd from .sample2
 
 func abc(
   b: String[],
@@ -67,8 +68,29 @@ val q = match hhh {
 
 val d: Direction = Direction.Up(amt: 12)
 match d {
-  Direction.Up(amt) d => println(d),
-  Direction.Down(_) d => println(d)
+  Direction.Up(amt) d => { println(d) },
+  Direction.Down d => println(d)
+}
+
+match evalAst(_input, env) {
+  EvalResult.Ok(v) => match v {
+    Value.List(values) => {
+      val [fn, *args] = values
+      match fn {
+        Value.BuiltinFn(fn) => fn(args)
+        Value.Fn(body, params, fnEnv, _) => {
+          fnEnv.initFnEnv(params, args)
+          input = body
+          env = fnEnv
+          continue
+        }
+        _ v => EvalResult.Err(error: "asdf")
+        None => EvalResult.Err(error: "Unreachable")
+      }
+    }
+    Y => EvalResult.Err(error: "Unreachable?")
+  }
+  EvalResult.Err e => { return e }
 }
 
 // val s: Map<String, Int[]> = {
