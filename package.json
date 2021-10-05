@@ -3,10 +3,11 @@
   "displayName": "Abra",
   "description": "Official extension for the Abra programming language",
   "publisher": "kengorab",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "scripts": {
     "compile": "tsc -b",
-    "watch": "tsc -b -w"
+    "watch": "tsc -b -w",
+    "build": "vsce package"
   },
   "engines": {
     "vscode": "^1.52.0"
@@ -53,6 +54,7 @@
   },
   "devDependencies": {
     "@types/node": "^14.14.19",
-    "typescript": "^4.1.3"
+    "typescript": "^4.1.3",
+    "vsce": "^1.99.0"
   }
 }
