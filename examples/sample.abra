@@ -1,5 +1,6 @@
-import expect from test
-import abcd from .sample2
+import expect from "test"
+import abcd from "./sample2"
+import "./sample2" as sample2
 
 func abc(
   b: String[],

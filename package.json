@@ -3,7 +3,7 @@
   "displayName": "Abra",
   "description": "Official extension for the Abra programming language",
   "publisher": "kengorab",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "scripts": {
     "compile": "tsc -b",
     "watch": "tsc -b -w",

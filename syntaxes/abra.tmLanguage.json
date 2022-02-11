@@ -46,7 +46,7 @@
       "patterns": [
         {
           "name": "keyword.control.abra",
-          "match": "\\b(if|else|while|for|in|break|continue|match|return|import|from|export|try)\\b"
+          "match": "\\b(if|else|while|for|in|break|continue|match|return|import|from|as|export|try)\\b"
         },
         {
           "name": "storage.type.abra",
