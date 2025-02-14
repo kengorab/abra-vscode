@@ -24,18 +24,26 @@
         }
       ]
     },
-    "statement": {
+    "declaration": {
       "patterns": [
+        { "include": "#decorator" },
         { "include": "#func-decl" },
-        { "include": "#enum-decl" },
         { "include": "#var-decl" },
         { "include": "#type-decl" },
+        { "include": "#enum-decl" }
+      ]
+    },
+    "statement": {
+      "patterns": [
+        { "include": "#declaration" },
         { "include": "#expression" }
       ]
     },
     "expression": {
       "patterns": [
+        { "include": "#keyword" },
         { "include": "#string" },
+        { "include": "#char" },
         { "include": "#number" },
         { "include": "#func-call" },
         { "include": "#match-expr" },
@@ -50,7 +58,17 @@
         },
         {
           "name": "storage.type.abra",
-          "match": "\\b(type|enum|func|val|var|self|true|false|None)\\b"
+          "match": "\\b(type|enum|decorator|func|val|var|self|true|false|None|pub)\\b"
+        },
+        {
+          "name": "keyword.control.abra",
+          "begin": "\\b(todo|unreachable)",
+          "end": "\\W",
+          "beginCaptures": {
+            "1": {
+              "name": "markup.italic.abra"
+            }
+          }
         }
       ]
     },
@@ -58,6 +76,17 @@
       "name": "string.quoted.double.abra",
       "begin": "\"",
       "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.abra",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "char": {
+      "name": "string.quoted.single.abra",
+      "begin": "'",
+      "end": "'",
       "patterns": [
         {
           "name": "constant.character.escape.abra",
@@ -97,7 +126,7 @@
       "patterns": [
         {
           "name": "meta.function.call.abra",
-          "begin": "([a-z][a-zA-Z0-9_]*)\\(",
+          "begin": "([a-z_][a-zA-Z0-9_]*)\\(",
           "end": "\\)",
           "beginCaptures": { "1": { "name": "entity.name.function.abra" } },
           "patterns": [{ "include": "#func-args" }]
@@ -114,7 +143,7 @@
     "match-expr": {
       "name": "meta.match.abra",
       "begin": "(match)",
-      "end": "}",
+      "end": "\\}",
       "beginCaptures": { "1": { "name": "keyword.control.abra" } },
       "patterns": [
         {
@@ -130,7 +159,7 @@
         },
         {
           "begin": "(?<==>\\s*)\\{",
-          "end": "}",
+          "end": "\\}",
           "patterns": [{ "include": "#code" }]
         },
         { "include": "#code" }
@@ -162,15 +191,14 @@
         }
       ]
     },
-    "type-annotation": {
-      "name": "meta.type.annotation.abra",
-      "begin": ":",
-      "end": "(?=$|[,){])|(?==[^>])",
+    "type-argument-list-decl": {
+      "name": "meta.arguments.type.abra",
+      "begin": "<",
+      "end": ">",
       "patterns": [
-        { "include": "#type-ident" },
         {
-          "name": "storage.modifier.abra",
-          "match": "\\breadonly\\b"
+          "name": "entity.name.type.abra",
+          "match": "[A-Z][a-zA-Z0-9_]*"
         }
       ]
     },
@@ -187,7 +215,7 @@
           "name": "entity.name.variable.abra",
           "match": "[a-z][a-zA-Z0-9_]*"
         },
-        { "include": "#type-annotation" },
+        { "include": "#type-ident" },
         {
           "name": "punctuation.separator.delimiter.abra",
           "match": ","
@@ -195,18 +223,50 @@
         { "include": "#expression" }
       ]
     },
-    "func-decl": {
+    "decorator": {
+      "begin": "(@[A-Za-z][a-zA-Z0-9_]+)",
+      "end": "\\s",
+      "beginCaptures": {
+          "1": { "name": "entity.name.type.decorator.abra" }
+      },
+      "patterns": [
+        { "include": "#string" },
+        { "include": "#number" }
+      ]
+    },
+    "func-decl-sig": {
       "name": "meta.function.abra",
-      "begin": "\\b(func)\\s+([a-z][a-zA-Z0-9_]*)(?=\\()",
-      "end": "}|$",
+      "begin": "\\b(func)\\s+([a-z_][a-zA-Z0-9_]*)",
+      "end": "(?==)|(?=\\{)|$",
       "beginCaptures": {
         "1": { "name": "storage.type.abra" },
         "2": { "name": "entity.name.function" }
       },
       "patterns": [
+        { "include": "#type-argument-list-decl" },
         { "include": "#func-params" },
-        { "include": "#type-annotation" },
-        { "include": "#code" }
+        { "include": "#type-ident" }
+      ]
+    },
+    "func-decl": {
+      "name": "meta.function.abra",
+      "patterns": [
+        { "include": "#func-decl-sig" },
+        {
+          "name": "meta.function.abra",
+          "begin": "\\{",
+          "end": "\\}",
+          "patterns": [
+            { "include": "#code" }
+          ]
+        },
+        {
+          "begin": "=",
+          "end": "(?=pub|func|type|enum|val|var|\\})",
+          "patterns": [
+            { "include": "#code" }
+          ]
+        }
       ]
     },
     "var-decl": {
@@ -219,37 +279,56 @@
             "1": { "name": "storage.type.abra" },
             "2": { "name": "variable.other.readwrite.abra" }
           },
-          "patterns": [{ "include": "#type-annotation" }]
+          "patterns": [
+            { "include": "#type-ident" }
+          ]
         }
       ]
     },
-    "type-decl": {
+    "type-enum-decl-sig": {
       "name": "meta.definition.type.abra",
-      "begin": "\\b(type)\\s+([A-Z][a-zA-Z0-9_]*)\\s*(?:\\{)",
-      "end": "}",
-      "beginCaptures": {
-        "1": { "name": "storage.type.abra" },
-        "2": { "name": "entity.name.type.abra" }
-      },
-      "patterns": [{ "include": "#type-annotation" }, { "include": "#code" }]
-    },
-    "enum-decl": {
-      "name": "meta.definition.enum.abra",
-      "begin": "\\b(enum)\\s+([A-Z][a-zA-Z0-9_]*)\\s*(?:\\{)",
-      "end": "}",
+      "begin": "\\b(type|decorator|enum)\\s+([A-Z][a-zA-Z0-9_]*)",
+      "end": "(?=\\{)",
       "beginCaptures": {
         "1": { "name": "storage.type.abra" },
         "2": { "name": "entity.name.type.abra" }
       },
       "patterns": [
+        { "include": "#type-argument-list-decl" }
+      ]
+    },
+    "type-decl": {
+      "name": "meta.definition.type.abra",
+      "patterns": [
+        { "include": "#type-enum-decl-sig" },
         {
-          "name": "meta.definition.enum.variant.abra",
-          "begin": "([A-Z][a-zA-Z0-9_]*)",
-          "end": ",|$",
-          "beginCaptures": { "1": { "name": "entity.name.type.abra" } },
-          "patterns": [{ "include": "#func-params" }]
-        },
-        { "include": "#code" }
+          "begin": "\\{",
+          "end": "\\}",
+          "patterns": [
+            { "include": "#func-decl" }
+          ]
+        }
+      ]
+    },
+    "enum-decl": {
+      "name": "meta.definition.enum.abra",
+      "patterns": [
+        { "include": "#type-enum-decl-sig" },
+        {
+          "name": "meta.definition.enum.abra",
+          "begin": "\\{",
+          "end": "\\}",
+          "patterns": [
+            {
+              "name": "meta.definition.enum.variant.abra",
+              "begin": "([A-Z][a-zA-Z0-9_]*)",
+              "end": ",|\n",
+              "beginCaptures": { "1": { "name": "entity.name.type.abra" } },
+              "patterns": [{ "include": "#func-params" }]
+            },
+            { "include": "#func-decl" }
+          ]
+        }
       ]
     }
   },
