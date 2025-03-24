@@ -126,6 +126,7 @@
     },
     "func-call": {
       "patterns": [
+        { "include": "#comment" },
         {
           "name": "meta.function.call.abra",
           "begin": "([a-z_][a-zA-Z0-9_]*)\\(",
@@ -294,15 +295,20 @@
       "beginCaptures": {
         "1": { "name": "entity.name.variable.abra" }
       },
-      "end": ",|$",
+      "end": ",|$|(?=\\})",
       "patterns": [
         { "include": "#keyword" },
-        {
-          "name": "punctuation.separator.delimiter.abra",
-          "match": "="
-        },
         { "include": "#type-ident" },
-        { "include": "#expression" }
+        {
+          "begin": "\\s*(=)\\s*",
+          "beginCaptures": {
+            "1": { "name": "punctuation.separator.delimiter.abra" }
+          },
+          "end": ",|$",
+          "patterns": [
+            { "include": "#expression" }
+          ]
+        }
       ]
     },
     "type-decl-sig": {
